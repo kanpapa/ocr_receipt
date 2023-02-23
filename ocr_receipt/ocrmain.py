@@ -150,6 +150,10 @@ def main():
     print(datemsg)
     print(nowtime)
 
+    # Create blank image for drawing.
+    image = Image.new("1", (oled.width, oled.height))
+    draw = ImageDraw.Draw(image)
+
     # Clear display.
     oled.fill(0)
     oled.show()
