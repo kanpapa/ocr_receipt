@@ -37,12 +37,13 @@ def beep():
     p.stop()
 
 def main():
-    # setup GPIO
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(12, GPIO.OUT)
 
-    # Setup OLED
+    # OLED
+    # Setting some variables for our reset pin etc.
+    #RESET_PIN = digitalio.DigitalInOut(board.D4)
     i2c = board.I2C()  # uses board.SCL and board.SDA
     oled = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c, addr=0x3C)
 
@@ -60,6 +61,10 @@ def main():
     font2 = ImageFont.truetype(
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
 
+    # Check switch
+    GPIO.wait_for_edge(18, GPIO.FALLING)
+    print('Switch ON!')
+
     # Draw the text
     draw.text((0, 0), 'OCR', font=font, fill=255)
     draw.text((0, 30), 'READY', font=font, fill=255)
@@ -68,12 +73,9 @@ def main():
     oled.image(image)
     oled.show()
 
-    # Check start switch
-    GPIO.wait_for_edge(18, GPIO.FALLING)
-    print('Switch ON!')
     beep()
 
-    # get datetime now
+    # get datetime
     dt_now = datetime.datetime.now()
     nowtime = dt_now.strftime('%Y-%m-%d %H:%M:%S')
     print(dt_now)
@@ -168,9 +170,10 @@ def main():
     oled.show()
 
     time.sleep(10)
-
+    
     # Program end
     print('END')
+
 
 if __name__ == "__main__":
     main()
