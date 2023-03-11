@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+# P1  3V3           OLED VCC
+# P3  GPIO2(SDA)    OLED SDA
+# P5  GPIO3(SCL)    OLED SCL
+# P6  GND           GND
+# P29 GPIO5         PushSwitch
+# P32 GPIO12(PWM0)  piezobuzzer
+
 from picamera2 import Picamera2, Preview
 from libcamera import controls
 import time
@@ -38,7 +45,7 @@ def beep():
 
 def main():
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(12, GPIO.OUT)
 
     # OLED
@@ -62,7 +69,7 @@ def main():
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
 
     # Check switch
-    GPIO.wait_for_edge(18, GPIO.FALLING)
+    GPIO.wait_for_edge(5, GPIO.FALLING)
     print('Switch ON!')
 
     # Draw the text
